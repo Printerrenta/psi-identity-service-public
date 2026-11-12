@@ -35,6 +35,10 @@ class ServiceSecurityTest {
         .andExpect(status().is(200));
     mvc.perform(get("/api/repair-requests").with(user("alice").roles("ADMIN")))
         .andExpect(status().is(403));
+    mvc.perform(post("/api/auth/customers")).andExpect(status().is(401));
+    mvc.perform(post("/api/auth/customers").with(user("alice").roles("CUSTOMER"))).andExpect(status().is(403));
+    mvc.perform(post("/api/auth/customers").with(user("staff").roles("EMPLOYEE"))).andExpect(status().is(200));
+    mvc.perform(get("/api/auth/customers").with(user("staff").roles("EMPLOYEE"))).andExpect(status().is(200));
   }
 
   @RestController
@@ -42,6 +46,7 @@ class ServiceSecurityTest {
     @RequestMapping({
       "/api/auth/config",
       "/api/auth/me",
+      "/api/auth/customers",
       "/api/admin/users/alice/role",
       "/api/repair-requests"
     })

@@ -60,6 +60,8 @@ public class SecurityConfiguration {
                   .permitAll()
                   .requestMatchers("/api/auth/me")
                   .authenticated()
+                  .requestMatchers("/api/auth/customers", "/api/auth/customers/**")
+                  .hasAnyRole("EMPLOYEE", "ADMIN")
                   .requestMatchers("/api/admin/**")
                   .hasRole("ADMIN")
                   .anyRequest()

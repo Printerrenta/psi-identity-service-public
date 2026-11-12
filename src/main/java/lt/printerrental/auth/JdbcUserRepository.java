@@ -57,6 +57,16 @@ public class JdbcUserRepository implements UserRepository {
   }
 
   @Override
+  public Optional<AppUser> findByEmail(String email) {
+    return db.query("SELECT subject,email,display_name,role FROM identity.app_users WHERE lower(email)=lower(?) ORDER BY created_at LIMIT 1", USER, email).stream().findFirst();
+  }
+
+  @Override
+  public List<AppUser> findCustomers(int page, int size) {
+    return db.query("SELECT subject,email,display_name,role FROM identity.app_users WHERE role='CUSTOMER' ORDER BY created_at,subject LIMIT ? OFFSET ?", USER, size, (long) page * size);
+  }
+
+  @Override
   public void lockRoleChanges() {
     db.execute("LOCK TABLE identity.app_users IN SHARE ROW EXCLUSIVE MODE");
   }

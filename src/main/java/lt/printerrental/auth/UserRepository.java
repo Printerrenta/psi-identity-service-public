@@ -11,6 +11,10 @@ public interface UserRepository {
 
   List<AppUser> findPage(int page, int size);
 
+  Optional<AppUser> findByEmail(String email);
+
+  List<AppUser> findCustomers(int page, int size);
+
   void lockRoleChanges();
 
   long countAdministrators();

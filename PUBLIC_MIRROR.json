@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceRepository": "Printerrenta/psi-identity-service",
-  "sourceCommit": "bba3fdb63bcd3f3d769b861e24d4e1a6c4ac02c8",
+  "sourceCommit": "b1d36a708b5a1454027cda58b125bd7b37172729",
   "sourceBranch": "main",
   "history": "Independent public snapshots; no private Git history",
   "files": [
@@ -78,12 +78,32 @@
       "sha256": "b427512082ff59d531521e0e06f8ba01bec5d64cf90d6a880f0244d461dd26ff"
     },
     {
+      "path": "src/main/java/lt/printerrental/auth/CustomerController.java",
+      "sha256": "3fdbe8a97514f9ada0bc2b0750b61edc25e2009472d9467de86462431da0f394"
+    },
+    {
+      "path": "src/main/java/lt/printerrental/auth/CustomerIdentityGateway.java",
+      "sha256": "042b2a9aff5353f5824e76f11f61583d0005543de601c37d412c23a0f1ab290f"
+    },
+    {
+      "path": "src/main/java/lt/printerrental/auth/CustomerProvisionException.java",
+      "sha256": "cc199a9d46d0784a34208dbfd0e4d57fc30c098523d775cde1c24795cdb6f0ee"
+    },
+    {
+      "path": "src/main/java/lt/printerrental/auth/CustomerService.java",
+      "sha256": "4a9fd544aada681d022a5435df7cf1e35327c25ef457eb0f20b5272838d9bd79"
+    },
+    {
       "path": "src/main/java/lt/printerrental/auth/JdbcUserRepository.java",
-      "sha256": "9a5b39b96b625f29e62261607e8658f27cd0b4092edba4c00db99b1d75f14ca0"
+      "sha256": "0735d91ce1315910bd418aebf48647c2b43ca6fbb4b2c2ab51118fe77f8985ff"
     },
     {
       "path": "src/main/java/lt/printerrental/auth/LocalUserIdentityResolver.java",
       "sha256": "39a05198b66c6f95833b29a4727e960884183f6bffec49254f36e778d86aefe4"
+    },
+    {
+      "path": "src/main/java/lt/printerrental/auth/ManagedCustomerIdentityGateway.java",
+      "sha256": "641fa40a6a0a1eafd43bcb3d7c4cb65142d44cc0404e78a4526a3915f122251b"
     },
     {
       "path": "src/main/java/lt/printerrental/auth/NeonJwtDecoder.java",
@@ -95,7 +115,7 @@
     },
     {
       "path": "src/main/java/lt/printerrental/auth/SecurityConfiguration.java",
-      "sha256": "8378089f1645f48dae13037570ede91b322cbe03fed4d14cfd87b33552b91b24"
+      "sha256": "52804f42941e09fa264fa39200817a0718480ea9a421553bfc7ea1829aec151c"
     },
     {
       "path": "src/main/java/lt/printerrental/auth/SigningKeyProvider.java",
@@ -107,7 +127,7 @@
     },
     {
       "path": "src/main/java/lt/printerrental/auth/UserExceptionHandler.java",
-      "sha256": "a50a653924ad52d9ced3c2c73205352224ceec026c5d73ece65ae2768d222294"
+      "sha256": "2dce62a38aed82644adbe56d72997404d7d28d187a2ad073ac431e0daa2eec87"
     },
     {
       "path": "src/main/java/lt/printerrental/auth/UserIdentityResolver.java",
@@ -123,7 +143,7 @@
     },
     {
       "path": "src/main/java/lt/printerrental/auth/UserRepository.java",
-      "sha256": "4c1459d70814c7c3398002d3f0a114d0cf5c28c668420706e36d7a2f80093e37"
+      "sha256": "eef65b8c6042370913a5f0120e5a0aae5a8af3dcf9233861100d163b7eab79ec"
     },
     {
       "path": "src/main/java/lt/printerrental/auth/UserRole.java",
@@ -170,6 +190,10 @@
       "sha256": "602e45bf6e78141b4674d1a469994083bc3aedc8ba56cc7472393f1d2fa54521"
     },
     {
+      "path": "src/test/java/lt/printerrental/auth/CustomerServiceTest.java",
+      "sha256": "1099674f0f0031540a1420dca4108bdd70b6705bb87239786196a683f952446d"
+    },
+    {
       "path": "src/test/java/lt/printerrental/auth/IdentityIT.java",
       "sha256": "7aa5faaefc107d4871cdb562497529bfba3a990f9741726602c93152e4a1e0a4"
     },
@@ -179,7 +203,7 @@
     },
     {
       "path": "src/test/java/lt/printerrental/auth/ServiceSecurityTest.java",
-      "sha256": "a235bcda7ece5fba948660df6ea18f905b5bdc70c793fce9c9c5e856bad7ad7f"
+      "sha256": "50cdc73bf8bb9e230c3e2277359f0181ab9037cb2bad170aa2549e802158fc99"
     },
     {
       "path": "src/test/java/lt/printerrental/auth/UserJwtAuthenticationConverterTest.java",
@@ -210,8 +234,13 @@
     "src/main/java/lt/printerrental/auth/AppUser.java",
     "src/main/java/lt/printerrental/auth/AuthController.java",
     "src/main/java/lt/printerrental/auth/CurrentUser.java",
+    "src/main/java/lt/printerrental/auth/CustomerController.java",
+    "src/main/java/lt/printerrental/auth/CustomerIdentityGateway.java",
+    "src/main/java/lt/printerrental/auth/CustomerProvisionException.java",
+    "src/main/java/lt/printerrental/auth/CustomerService.java",
     "src/main/java/lt/printerrental/auth/JdbcUserRepository.java",
     "src/main/java/lt/printerrental/auth/LocalUserIdentityResolver.java",
+    "src/main/java/lt/printerrental/auth/ManagedCustomerIdentityGateway.java",
     "src/main/java/lt/printerrental/auth/NeonJwtDecoder.java",
     "src/main/java/lt/printerrental/auth/RemoteJwksSigningKeyProvider.java",
     "src/main/java/lt/printerrental/auth/SecurityConfiguration.java",
@@ -233,6 +262,7 @@
     "src/main/resources/application.properties",
     "src/main/resources/db/migration/V1__users.sql",
     "src/test/java/lt/printerrental/architecture/ServiceArchitectureTest.java",
+    "src/test/java/lt/printerrental/auth/CustomerServiceTest.java",
     "src/test/java/lt/printerrental/auth/IdentityIT.java",
     "src/test/java/lt/printerrental/auth/NeonJwtDecoderTest.java",
     "src/test/java/lt/printerrental/auth/ServiceSecurityTest.java",

@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class UserExceptionHandler {
+  @ExceptionHandler(CustomerProvisionException.class)
+  ProblemDetail customerProvision(CustomerProvisionException error) {
+    return ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(error.status()), error.getMessage());
+  }
   @ExceptionHandler(UserNotFoundException.class)
   ProblemDetail notFound(UserNotFoundException error) {
     return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, error.getMessage());
