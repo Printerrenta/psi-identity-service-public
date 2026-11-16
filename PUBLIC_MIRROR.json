@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceRepository": "Printerrenta/psi-identity-service",
-  "sourceCommit": "b1d36a708b5a1454027cda58b125bd7b37172729",
+  "sourceCommit": "ae61b16f4ecba97cf903478fa9e8f77a1c22ec22",
   "sourceBranch": "main",
   "history": "Independent public snapshots; no private Git history",
   "files": [
@@ -31,7 +31,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "cc255a76e9546e76835eebe4df84756f33316bdd569246cf9923328164f4bea5"
+      "sha256": "3eabe20a2a15a02f7e4686c834c5c76f1fdfcf85928486bd67c14e28962c81dd"
     },
     {
       "path": "mvnw",
