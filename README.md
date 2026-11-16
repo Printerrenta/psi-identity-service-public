@@ -8,6 +8,15 @@ have separate PostgreSQL databases and restricted credentials; the gateway has n
 Controllers delegate use cases, domain objects enforce invariants, and HTTP/JDBC/JPA
 adapters implement local ports. Business models and SQL are not shared between services.
 
+## User and role workflows
+
+- GET /api/auth/me returns the application identity and role for the current JWT.
+- Staff use /api/auth/customers to list or provision customer accounts.
+- Administrators use /api/admin/users and PATCH /api/admin/users/{subject}/role
+  to manage application roles; customers cannot grant themselves staff access.
+- Managed authentication and application roles are separate concerns. Creating
+  a customer must not replace the staff user's current browser session.
+
 ## Build and test
 
 ```sh
