@@ -20,4 +20,18 @@ public class UserExceptionHandler {
   ProblemDetail roleConflict(UserRoleConflictException error) {
     return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, error.getMessage());
   }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  ProblemDetail badRequest(IllegalArgumentException error) {
+    String message = error.getMessage();
+    if (message == null || message.isBlank()) {
+      return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid request");
+    }
+    String safe = message.replaceAll("[\\r\\n]+", " ").strip();
+    if (safe.length() > 200) {
+      safe = safe.substring(0, 200);
+    }
+    return ProblemDetail.forStatusAndDetail(
+        HttpStatus.BAD_REQUEST, safe.isBlank() ? "Invalid request" : safe);
+  }
 }

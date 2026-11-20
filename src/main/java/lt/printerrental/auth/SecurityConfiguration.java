@@ -29,8 +29,11 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  JwtDecoder jwtDecoder(@Value("${NEON_AUTH_BASE_URL}") String base, SigningKeyProvider keys) {
-    return new NeonJwtDecoder(base, keys);
+  JwtDecoder jwtDecoder(
+      @Value("${NEON_AUTH_BASE_URL}") String base,
+      SigningKeyProvider keys,
+      @Value("${NEON_AUTH_AUDIENCE:}") String audience) {
+    return new NeonJwtDecoder(base, keys, audience);
   }
 
   @Bean
@@ -44,7 +47,7 @@ public class SecurityConfiguration {
     cors.setAllowedOrigins(
         Arrays.stream(origins.split(",")).map(String::strip).filter(s -> !s.isBlank()).toList());
     cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "OPTIONS"));
-    cors.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Serverless-Authorization"));
+    cors.setAllowedHeaders(List.of("Authorization", "Content-Type"));
     cors.setExposedHeaders(List.of("Location", "Content-Disposition"));
     var source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", cors);

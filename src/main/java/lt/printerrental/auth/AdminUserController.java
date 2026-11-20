@@ -20,7 +20,7 @@ public class AdminUserController {
 
   @GetMapping
   public List<AppUser> list(
-      @RequestParam(defaultValue = "0") @Min(0) int page,
+      @RequestParam(defaultValue = "0") @Min(0) @Max(10000) int page,
       @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
     return users.list(page, size);
   }

@@ -17,8 +17,13 @@ public class UserService {
   public AppUser registerIdentity(String subject, String email, String name) {
     // The repository assigns CUSTOMER only; identity-provider roles are never application
     // permissions.
-    users.createCustomerIfAbsent(subject, bounded(email, 254), bounded(name, 255));
-    return get(subject);
+    return users
+        .findBySubject(subject)
+        .orElseGet(
+            () -> {
+              users.createCustomerIfAbsent(subject, bounded(email, 254), bounded(name, 255));
+              return get(subject);
+            });
   }
 
   public AppUser get(String subject) {
@@ -26,10 +31,16 @@ public class UserService {
   }
 
   public List<AppUser> list(int page, int size) {
+    if (page < 0 || page > 10000 || size < 1 || size > 100) {
+      throw new IllegalArgumentException("Invalid pagination");
+    }
     return users.findPage(page, size);
   }
 
   private String bounded(String value, int length) {
-    return value == null || value.length() > length ? "" : value;
+    if (value == null) {
+      return "";
+    }
+    return value.length() > length ? value.substring(0, length) : value;
   }
 }

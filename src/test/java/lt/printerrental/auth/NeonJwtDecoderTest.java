@@ -161,4 +161,61 @@ class NeonJwtDecoderTest {
     org.mockito.Mockito.when(clock.instant()).thenReturn(now.plusSeconds(11));
     assertThat(decoder.decode(nextToken).getSubject()).isEqualTo("customer-a");
   }
+
+  @Test
+  void validatesAudienceOnlyWhenConfigured() throws Exception {
+    var provider =
+        new RemoteJwksSigningKeyProvider(
+            java.net.URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/jwks"),
+            java.net.http.HttpClient.newHttpClient(),
+            java.time.Clock.systemUTC());
+    var audDecoder = new NeonJwtDecoder("https://auth.example.test/auth", provider, "psi-api");
+
+    var withoutAud = token(claims(), "EdDSA", "key-1", key);
+    assertThatThrownBy(() -> audDecoder.decode(withoutAud)).isInstanceOf(JwtException.class);
+
+    var wrongAudClaims = claims();
+    wrongAudClaims.put("aud", "other-service");
+    var wrongAud = token(wrongAudClaims, "EdDSA", "key-1", key);
+    assertThatThrownBy(() -> audDecoder.decode(wrongAud)).isInstanceOf(JwtException.class);
+
+    var matchingAudClaims = claims();
+    matchingAudClaims.put("aud", "psi-api");
+    var matchingAud = token(matchingAudClaims, "EdDSA", "key-1", key);
+    assertThat(audDecoder.decode(matchingAud).getSubject()).isEqualTo("customer-a");
+
+    var multiAudClaims = claims();
+    multiAudClaims.put("aud", List.of("other-service", "psi-api"));
+    var multiAud = token(multiAudClaims, "EdDSA", "key-1", key);
+    assertThat(audDecoder.decode(multiAud).getSubject()).isEqualTo("customer-a");
+  }
+
+  @Test
+  void fallsBackToCachedKeysWhenJwksRefreshFailsTransiently() throws Exception {
+    var clock = org.mockito.Mockito.mock(java.time.Clock.class);
+    var now = Instant.now();
+    org.mockito.Mockito.when(clock.instant()).thenReturn(now);
+    var provider =
+        new RemoteJwksSigningKeyProvider(
+            java.net.URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/jwks"),
+            java.net.http.HttpClient.newHttpClient(),
+            clock);
+    var timedDecoder = new NeonJwtDecoder("https://auth.example.test/auth", provider);
+    var jwt = token(claims(), "EdDSA", "key-1", key);
+    assertThat(timedDecoder.decode(jwt).getSubject()).isEqualTo("customer-a");
+
+    // Stop JWKS server and advance past the 300s refresh TTL; cached keys should keep working.
+    server.stop(0);
+    org.mockito.Mockito.when(clock.instant()).thenReturn(now.plusSeconds(301));
+    assertThat(timedDecoder.decode(jwt).getSubject()).isEqualTo("customer-a");
+
+    // Cold-start provider without cached keys must still fail when JWKS is unreachable.
+    var coldProvider =
+        new RemoteJwksSigningKeyProvider(
+            java.net.URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/jwks"),
+            java.net.http.HttpClient.newHttpClient(),
+            clock);
+    var coldDecoder = new NeonJwtDecoder("https://auth.example.test/auth", coldProvider);
+    assertThatThrownBy(() -> coldDecoder.decode(jwt)).isInstanceOf(JwtException.class);
+  }
 }

@@ -1,10 +1,13 @@
 package lt.printerrental.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserRoleService {
+  private static final Logger log = LoggerFactory.getLogger(UserRoleService.class);
   private final UserRepository users;
   private final CurrentUser currentUser;
 
@@ -28,6 +31,12 @@ public class UserRoleService {
       throw new UserRoleConflictException();
     }
     users.updateRole(subject, role);
+    log.info(
+        "Role changed actor={} subject={} from={} to={}",
+        currentUser.subject(),
+        subject,
+        user.role(),
+        role);
     return new AppUser(user.subject(), user.email(), user.name(), role);
   }
 }
